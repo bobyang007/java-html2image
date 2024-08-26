@@ -10,14 +10,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.xhtmlrenderer</groupId>
-			<artifactId>core-renderer</artifactId>
-			<version>R8</version>
-		</dependency>
-		<dependency>
 			<groupId>net.sourceforge.nekohtml</groupId>
 			<artifactId>nekohtml</artifactId>
-			<version>1.9.22</version>
+			<version>1.9.14</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -35,6 +30,12 @@
 			<artifactId>spring-core</artifactId>
 			<version>3.0.3.RELEASE</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>core-renderer</artifactId>
+			<version>R8-NEW</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
