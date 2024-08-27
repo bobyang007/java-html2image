@@ -29,6 +29,10 @@ import org.xhtmlrenderer.render.JustificationInfo;
 public interface TextRenderer {
     public void setup(FontContext context);
 
+    public int getPrintHeight();
+
+    public int getNeedLine();
+
     public void drawString(OutputDevice outputDevice, String string, float x, float y);
     public void drawString(
             OutputDevice outputDevice, String string, float x, float y, JustificationInfo info);
@@ -44,6 +48,8 @@ public interface TextRenderer {
             FontContext context, FSFont font, String string );
 
     public int getWidth(FontContext context, FSFont font, String string);
+
+    public TextRenderer setWidth(int width);
 
     public void setFontScale(float scale);
 

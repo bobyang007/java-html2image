@@ -57,19 +57,19 @@ public abstract class AbstractOutputDevice implements OutputDevice {
             if (inlineText.getParent().getStyle().isTextJustify()) {
                 JustificationInfo info = inlineText.getParent().getLineBox().getJustificationInfo();
                 if (info != null) {
-                    c.getTextRenderer().drawString(
+                    c.getTextRenderer().setWidth(inlineText.getWidth()).drawString(
                             c.getOutputDevice(),
                             text,
                             iB.getAbsX() + inlineText.getX(), iB.getAbsY() + iB.getBaseline(),
                             info);
                 } else {
-                    c.getTextRenderer().drawString(
+                    c.getTextRenderer().setWidth(inlineText.getWidth()).drawString(
                             c.getOutputDevice(),
                             text,
                             iB.getAbsX() + inlineText.getX(), iB.getAbsY() + iB.getBaseline());                    
                 }
             } else {
-                c.getTextRenderer().drawString(
+                c.getTextRenderer().setWidth(inlineText.getWidth()).drawString(
                         c.getOutputDevice(),
                         text,
                         iB.getAbsX() + inlineText.getX(), iB.getAbsY() + iB.getBaseline());

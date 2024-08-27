@@ -36,6 +36,8 @@ public class LineBreakContext {
     private int _width;
     private boolean _endsOnNL;
     private Text _textNode;
+
+    private int _needMoreLine;
     
     public int getLast() {
         return _master.length();
@@ -45,6 +47,7 @@ public class LineBreakContext {
         _width = 0;
         _unbreakable = false;
         _needsNewLine = false;
+        _needMoreLine = 0;
     }
     
     public int getEnd() {
@@ -93,6 +96,14 @@ public class LineBreakContext {
 
     public void setNeedsNewLine(boolean needsLineBreak) {
         _needsNewLine = needsLineBreak;
+    }
+
+    public void setNeedMoreLine(int value) {
+        _needMoreLine = value;
+    }
+
+    public int getNeedMoreLine() {
+        return _needMoreLine;
     }
 
     public int getWidth() {

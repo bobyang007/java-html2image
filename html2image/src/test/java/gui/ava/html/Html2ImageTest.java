@@ -21,7 +21,6 @@ public class Html2ImageTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(htmlStr);
         // 2.0.1 版本
         Html2Image html2Image = Html2Image.fromHtml(htmlStr);
         ImageRenderer imageRenderer = html2Image.getImageRenderer();

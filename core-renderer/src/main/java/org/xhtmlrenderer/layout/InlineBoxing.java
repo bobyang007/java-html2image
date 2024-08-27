@@ -225,8 +225,13 @@ public class InlineBoxing {
                     }
 
                     if (lbContext.isNeedsNewLine()) {
-                        saveLine(currentLine, c, box, minimumLineHeight,
-                                maxAvailableWidth, pendingFloats, 
+                        int needMoreHeight = minimumLineHeight;
+                        if (lbContext.getNeedMoreLine() > 1) {
+                            needMoreHeight = minimumLineHeight * (lbContext.getNeedMoreLine());
+                        }
+                        //System.out.println("本次打印，多行展示:" + lbContext.getMaster() +" Height:" + needMoreHeight);
+                        saveLine(currentLine, c, box, needMoreHeight,
+                                maxAvailableWidth, pendingFloats,
                                 hasFirstLinePEs, pendingInlineLayers, markerData,
                                 contentStart, isAlwaysBreak(c, box, breakAtLine, lineOffset));
                         lineOffset++;

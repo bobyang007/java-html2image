@@ -38,6 +38,14 @@ public class ITextTextRenderer implements TextRenderer {
     public void setup(FontContext context) {
     }
 
+    public int getPrintHeight() {
+        return 0;
+    }
+
+    public int getNeedLine() {
+        return 1;
+    }
+
     public void drawString(OutputDevice outputDevice, String string, float x, float y) {
         ((ITextOutputDevice)outputDevice).drawString(string, x, y, null);
     }
@@ -66,6 +74,13 @@ public class ITextTextRenderer implements TextRenderer {
         result.setUnderlineThickness(descr.getUnderlineThickness() / 1000f * size);
         
         return result;
+    }
+
+    private int _width = 0;
+
+    public TextRenderer setWidth(int width) {
+        _width = width;
+        return this;
     }
 
     public int getWidth(FontContext context, FSFont font, String string) {
