@@ -75,104 +75,15 @@ public class Java2DTextRenderer implements TextRenderer {
         }
     }
 
-    /**
-     * 根据指定宽度自动换行
-     * @param g
-     * @param maxWdith
-     * @param strContent
-     * @param loc_X
-     * @param loc_Y
-     * @param font
-     */
-    private  int  drawStringWithFontStyleLineFeed(Graphics2D g, String strContent,int maxWdith, int loc_X, int loc_Y, Font font){
-        g.setFont(font);
-        //获取字符串 字符的总宽度
-        int strWidth =getStringLength(g,strContent);
-        //每一行字符串宽度
-        int rowWidth=maxWdith;
-        // System.out.println("每行字符宽度:"+rowWidth);
-        //获取字符高度
-        int strHeight=getStringHeight(g);
-        int totalHeight = strHeight;
-        //字符串总个数
-        //System.out.println("字符串总个数:"+strContent.length()+"======>"+strContent);
-        if(strWidth>rowWidth){
-            char[] strContentArr = strContent.toCharArray();
-            int count = 0;
-            int conut_value = 0;
-            int line = 0;
-            int charWidth = 0;
-            for(int j=0;j< strContentArr.length;j++){
-                if(conut_value+g.getFontMetrics().charWidth(strContentArr[j])>=rowWidth){
-                    conut_value = 0;
-                    //System.out.println("绘制1:"+strContent.substring(count,j));
-                    g.drawString(strContent.substring(count,j),loc_X,loc_Y+strHeight*line);
-                    count = j;
-                    line++;
-                    totalHeight += strHeight;
-                }else{
-                    if(j==strContentArr.length - 1){
-                        //System.out.println("绘制2:"+strContent.substring(count,j+1));
-                        g.drawString(strContent.substring(count,j+1),loc_X,loc_Y+strHeight*line);
-                    }else{
-                        charWidth = g.getFontMetrics().charWidth(strContentArr[j]);
-                        conut_value = charWidth + conut_value;
-                    }
-                }
-            }
-
-        }else{
-            //直接绘制
-            g.drawString(strContent, loc_X, loc_Y);
-        }
-        //System.out.println("打印总高度:" + totalHeight);
-        return totalHeight;
-    }
-    private int  getStringLength(Graphics2D g,String str) {
-        char[]  strcha=str.toCharArray();
-        int strWidth = g.getFontMetrics().charsWidth(strcha, 0, str.length());
-        //System.out.println("字符总宽度:"+strWidth);
-        return strWidth;
-    }
-
-
-    private int  getStringHeight(Graphics2D g) {
-        int height = g.getFontMetrics().getHeight();
-        //System.out.println("字符高度:"+height);
-        return height;
-    }
-
-    int _printHeight = 0;
-
-    public int getPrintHeight() {
-        return _printHeight;
-    }
-
-    int _needLine = 1;
-
-    public int getNeedLine() {
-        return _needLine;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @return
-     */
+    /** {@inheritDoc} */
     public void drawString(OutputDevice outputDevice, String string, float x, float y ) {
-        //System.out.println("print string 1 " + string + "====" + x + ":" + y);
         Object prevHint = null;
         Graphics2D graphics = ((Java2DOutputDevice)outputDevice).getGraphics();
         if ( graphics.getFont().getSize() > threshold ) {
             prevHint = graphics.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
             graphics.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, antiAliasRenderingHint );
         }
-        if (_width <= 0) {
-            _printHeight = getStringHeight(graphics);
-            graphics.drawString(string, (int) x, (int) y);
-        } else {
-            _printHeight = drawStringWithFontStyleLineFeed(graphics, string, _width, (int) x, (int) y, graphics.getFont());
-        }
+        graphics.drawString( string, (int)x, (int)y );
         if ( graphics.getFont().getSize() > threshold ) {
             graphics.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, prevHint );
         }
@@ -180,7 +91,6 @@ public class Java2DTextRenderer implements TextRenderer {
     
     public void drawString(
             OutputDevice outputDevice, String string, float x, float y, JustificationInfo info) {
-        //System.out.println("print string 2 " + string + "====" + x + ":" + y);
         Object prevHint = null;
         Graphics2D graphics = ((Java2DOutputDevice)outputDevice).getGraphics();
         if ( graphics.getFont().getSize() > threshold ) {
@@ -256,30 +166,12 @@ public class Java2DTextRenderer implements TextRenderer {
                 ((AWTFSFont)font).getAWTFont().getLineMetrics(
                         string, graphics.getFontRenderContext()));
     }
-
-    private int _width = 0;
-
-    public TextRenderer setWidth(int width) {
-        _width = width;
-        if (_width == 0) {
-            _printHeight = 0;
-            _needLine = 0;
-        }
-        return this;
-    }
+    
     public int getWidth(FontContext fc, FSFont font, String string) {
         Graphics2D graphics = ((Java2DFontContext)fc).getGraphics();
         Font awtFont = ((AWTFSFont)font).getAWTFont();
-        int result = (int)Math.ceil(
+        return (int)Math.ceil(
                 graphics.getFontMetrics(awtFont).getStringBounds(string, graphics).getWidth());
-        _printHeight = graphics.getFontMetrics().getHeight();
-        if (_width >0 && result > _width) {
-            //System.out.println("获取宽度:" + result + "========>" + _width + "|||" + string);
-            _needLine = (result + _width - 1) / _width;
-            _printHeight = _printHeight * _needLine;
-            result = _width;
-        }
-        return result;
     }
 
     public float getFontScale() {

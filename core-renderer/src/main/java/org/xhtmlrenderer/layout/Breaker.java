@@ -69,13 +69,12 @@ public class Breaker {
             LineBreakContext context, int avail, CalculatedStyle style) {
         FSFont font = style.getFSFont(c);
         IdentValue whitespace = style.getWhitespace();
-        c.getTextRenderer().setWidth(0);
+        
         // ====== handle nowrap
         if (whitespace == IdentValue.NOWRAP) {
         	context.setEnd(context.getLast());
         	context.setWidth(c.getTextRenderer().getWidth(
                     c.getFontContext(), font, context.getCalculatedSubstring()));
-            context.setNeedMoreLine(c.getTextRenderer().getNeedLine());
             return;
         }
 
@@ -86,18 +85,14 @@ public class Breaker {
             int n = context.getStartSubstring().indexOf(WhitespaceStripper.EOL);
             if (n > -1) {
                 context.setEnd(context.getStart() + n + 1);
-                context.setWidth(c.getTextRenderer().setWidth(avail).getWidth(
+                context.setWidth(c.getTextRenderer().getWidth(
                         c.getFontContext(), font, context.getCalculatedSubstring()));
                 context.setNeedsNewLine(true);
                 context.setEndsOnNL(true);
-                context.setNeedMoreLine(c.getTextRenderer().getNeedLine());
             } else if (whitespace == IdentValue.PRE) {
             	context.setEnd(context.getLast());
-                context.setWidth(c.getTextRenderer().setWidth(avail).getWidth(
-                        c.getFontContext(), font, context.getCalculatedSubstring()));
-                context.setNeedsNewLine(c.getTextRenderer().getNeedLine() > 1);
-                context.setEndsOnNL(c.getTextRenderer().getNeedLine() > 1);
-                context.setNeedMoreLine(c.getTextRenderer().getNeedLine());
+                context.setWidth(c.getTextRenderer().getWidth(
+                        c.getFontContext(), font, context.getCalculatedSubstring()));  
             }
         }
 
@@ -118,25 +113,19 @@ public class Breaker {
 
         while (right > 0 && graphicsLength <= avail) {
             lastGraphicsLength = graphicsLength;
-            graphicsLength += c.getTextRenderer().setWidth(avail).getWidth(
+            graphicsLength += c.getTextRenderer().getWidth(
                     c.getFontContext(), font, currentString.substring(left, right));
             lastWrap = left;
             left = right;
             right = currentString.indexOf(WhitespaceStripper.SPACE, left + 1);
-            context.setNeedsNewLine(c.getTextRenderer().getNeedLine() > 1);
-            context.setEndsOnNL(c.getTextRenderer().getNeedLine() > 1);
-            context.setNeedMoreLine(c.getTextRenderer().getNeedLine());
         }
 
         if (graphicsLength <= avail) {
             //try for the last bit too!
             lastWrap = left;
             lastGraphicsLength = graphicsLength;
-            graphicsLength += c.getTextRenderer().setWidth(avail).getWidth(
+            graphicsLength += c.getTextRenderer().getWidth(
                     c.getFontContext(), font, currentString.substring(left));
-            context.setNeedsNewLine(c.getTextRenderer().getNeedLine() > 1);
-            context.setEndsOnNL(c.getTextRenderer().getNeedLine() > 1);
-            context.setNeedMoreLine(c.getTextRenderer().getNeedLine());
         }
 
         if (graphicsLength <= avail) {
@@ -160,11 +149,8 @@ public class Breaker {
             context.setUnbreakable(true);
             
             if (left == currentString.length()) {
-                context.setWidth(c.getTextRenderer().setWidth(avail).getWidth(
+                context.setWidth(c.getTextRenderer().getWidth(
                         c.getFontContext(), font, context.getCalculatedSubstring()));
-                context.setNeedsNewLine(c.getTextRenderer().getNeedLine() > 1);
-                context.setEndsOnNL(c.getTextRenderer().getNeedLine() > 1);
-                context.setNeedMoreLine(c.getTextRenderer().getNeedLine());
             } else {
                 context.setWidth(graphicsLength);
             }
