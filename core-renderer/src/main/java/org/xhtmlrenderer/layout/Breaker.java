@@ -141,19 +141,38 @@ public class Breaker {
             context.setEnd(context.getStart() + lastWrap);
             context.setWidth(lastGraphicsLength);
         } else {//unbreakable string
+            /*
             if (left == 0) {
                 left = currentString.length();
             }
+             */
+            int printLength = left;
+            int testWidth =0;
+            while (testWidth <= avail && printLength < currentString.length()) {
+                int nowWidth = c.getTextRenderer().getWidth(
+                        c.getFontContext(),
+                        font,
+                        currentString.substring(printLength, printLength + 1)
+                );
+                printLength++;
+                testWidth += nowWidth;
+            }
+
+            if (testWidth > avail) {
+                printLength--;
+            }
             
-            context.setEnd(context.getStart() + left);
+            context.setEnd(context.getStart() + printLength);
             context.setUnbreakable(true);
-            
+            context.setWidth(testWidth);
+            /*
             if (left == currentString.length()) {
                 context.setWidth(c.getTextRenderer().getWidth(
                         c.getFontContext(), font, context.getCalculatedSubstring()));
             } else {
                 context.setWidth(graphicsLength);
             }
+             */
         }
         return;
     }
