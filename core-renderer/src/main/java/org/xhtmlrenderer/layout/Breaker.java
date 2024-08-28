@@ -148,18 +148,20 @@ public class Breaker {
              */
             int printLength = left;
             int testWidth =0;
+            int lastWidth = 0;
             while (testWidth <= avail && printLength < currentString.length()) {
-                int nowWidth = c.getTextRenderer().getWidth(
+                lastWidth = c.getTextRenderer().getWidth(
                         c.getFontContext(),
                         font,
                         currentString.substring(printLength, printLength + 1)
                 );
                 printLength++;
-                testWidth += nowWidth;
+                testWidth += lastWidth;
             }
 
             if (testWidth > avail) {
                 printLength--;
+                testWidth -= lastWidth;
             }
             
             context.setEnd(context.getStart() + printLength);
