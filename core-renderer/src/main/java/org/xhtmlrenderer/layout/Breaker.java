@@ -146,7 +146,7 @@ public class Breaker {
                 left = currentString.length();
             }
              */
-            int printLength = left;
+            int printLength = 0;
             int testWidth =0;
             int lastWidth = 0;
             while (testWidth <= avail && printLength < currentString.length()) {
